@@ -1,0 +1,50 @@
+*** Settings ***
+Documentation	สั่งสินค้ากับตลาดดอดคอม
+Library    Selenium2Library
+
+*** Variables ***
+
+
+*** Testcases ***
+สั่งสินค้า
+	[Documentation]    สั่งสินค้า
+	Open Browser    http://www.tarad.com/product/6126300
+	Select Radio Button    option_id    169991
+	Select From List By Label    product_qty    5
+	Click Button    id=f_buy
+	Wait Until Page Contains Element    xpath=//div[@class='getitem4']/span[@class='black-title']     20
+	Element Should Contain    xpath=//div[@class='getitem4']/span[@class='black-title']    5 ชิ้น
+	Click Element    btn-payment
+
+	Click Button    สั่งซื้อทันที
+
+ตรวจสอบยอดสั่งซื้อและเลืิอกวิธีชำระเงิน
+	[Documentation]    ตรวจสอบยอดสั่งซื้อและเลืิอกวิธีชำระเงิน
+	${cell}=    Get Table Cell    xpath=//*[@id="main_container"]/div[2]/div[1]/div[2]/div/div/fieldset/table    2    6
+
+	Should Be Equal    ${cell}    4,950.00
+
+	Click Element    xpath=//li[@id='counter-service']/a
+
+	Set Selenium Speed   3
+	Click Button    next-btn
+	Set Selenium Speed   0.5
+
+ป้อนขอ้มูลผู้สั่งซื้อ
+	[Documentation]    ป้อนขอ้มูลผู้สั่งซื้อ
+	Input Text    id=send_firstname    ศิรินทรา
+	Input Text    id=send_lastname    หรี่จินดา
+	Input Text    id=send_address    ที่อยู่จัดส่ง
+	Select From List    id=send_country    TH
+	Select From List    id=send_province    1
+	Select From List    id=send_city    25_10140
+	Input Text    id=send_district    บางปะกอก
+	Input Text    id=send_email    sirintra.reejinda@gmail.com
+	Input Text    id=send_mobile    0840449626
+
+	Set Selenium Speed   3
+	Click Element    next-btn
+	Set Selenium Speed   0.5
+	
+	#Close Browser
+*** Keywords ***
